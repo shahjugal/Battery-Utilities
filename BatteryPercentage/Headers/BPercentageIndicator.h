@@ -27,7 +27,8 @@ namespace ShahJugalR{
                 @note Please pass the analogReading without any manipulation.
             */
             int QueryLevel(int reading){
-                double voltage = map(reading, 0, 1023, 0, 2500) + offset;
+                double voltage = reading * (baseVoltage/1023.0) + offset;
+              	voltage *= 100;
                 voltage /= baseVoltage;
                 if(voltage > 100)
                     voltage = 100;
