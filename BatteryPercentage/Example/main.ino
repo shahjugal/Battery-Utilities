@@ -6,9 +6,9 @@
 ShahJugalR::BatteryUtilities::BPerc PercentageDevice(peakVoltage);
 
 void setup(){
-
+    Serial.begin(9600);
 }
 
 void loop(){
-    print(PercentageDevice.QueryLevel(analogRead(voltagePin)));
+    Serial.println(PercentageDevice.QueryLevel(analogRead(voltagePin)));
 }
