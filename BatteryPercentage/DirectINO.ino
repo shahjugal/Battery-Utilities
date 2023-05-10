@@ -29,14 +29,14 @@ class BatteryMonitor {
     const float peakVoltage;
     float voltage;
     unsigned long startTime;
-    unsigned long elapsedTime;
+    double elapsedTime;
   	double health = 100;
   	unsigned long startPercentage;
     double perD;
   double inHours;
     
   public:
-    BatteryMonitor(int voltagePin, float peakVoltage, double perD = 2, double inHours = 0.5) :
+    BatteryMonitor(int voltagePin, float peakVoltage, double perD = 1, double inHours = 0.008) :
       voltagePin(voltagePin),
       peakVoltage(peakVoltage), perD(perD), inHours(inHours) {}
 
@@ -55,7 +55,7 @@ class BatteryMonitor {
     getVoltage();
     Serial.println(millis()-startTime);
     	
-    if(getElapsedTimeHours > inHours){
+    if(getElapsedTimeHours() > inHours){
     	double perDrop = startPercentage - getBatteryPercentage();
     if(perD < perDrop){
       	double refRate = perD/36000;
@@ -76,9 +76,9 @@ class BatteryMonitor {
     }
 
     double getElapsedTimeHours() {
-      unsigned long currentTime = millis();
+      double currentTime = millis();
       elapsedTime = currentTime - startTime;
-      unsigned long hours = elapsedTime / 3600000;
+      double hours = elapsedTime / 3600000;
       return hours;
     }
 
@@ -121,7 +121,7 @@ class LCD : public OutputDevice {
       lcd_->print(text);
     }
 
-  private:
+  public:
     LiquidCrystal* lcd_;
 };
 
@@ -154,7 +154,7 @@ class TextWriter {
 //-----Classes end-----------//
 
 const  int voltagePin = A0;
-const  float peakVoltage  = 30;
+const  float peakVoltage  = 5;
 
 LCD lcd(12, 11, 5, 4, 3, 2);
 SerialMonitor serial_monitor;
@@ -171,6 +171,7 @@ void setup(){
 }
 
 void loop(){
+  lcd.lcd_->clear();
   if (battery.getBatteryPercentage()<80) 
     relay.turnOn();
    else 
