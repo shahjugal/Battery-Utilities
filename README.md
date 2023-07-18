@@ -1,2 +1,2 @@
 # Battery-Utilities
- Himnish's Group's Capstone Project Arduino Source Code.
+Battery health and battery percentage algorithm for arduino hackathon solar rooftop project
